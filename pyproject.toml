@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "MtbTk"
-version = "0.0.1"
+version = "0.0.2"
 authors = [{ name = "TianyiLu", email = "tianyi9494@gmail.com" }]
 description = "A collection of tools for database manipulation, enrichment analysis, and genome analysis."
 readme = "README.md"
@@ -15,11 +15,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "intervaltree>=3.1.0,<4.0.0",
-    "numpy>=2.1.0,<3.0.0",
-    "pandas>=2.2.0,<3.0.0",
-    "scipy>=1.14.0,<2.0.0",
-    "statsmodels>=0.14.0,<0.15.0",
+    "intervaltree>=3.0.2",
+    "numpy>=1.20.0",
+    "pandas>=1.2.0",
+    "scipy>=1.6.0",
+    "statsmodels>=0.12.0",
 ]
 
 [project.urls]
