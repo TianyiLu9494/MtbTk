@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "MtbTk"
-version = "0.0.2"
+version = "0.0.3"
 authors = [{ name = "TianyiLu", email = "tianyi9494@gmail.com" }]
-description = "A collection of tools for database manipulation, enrichment analysis, and genome analysis."
+description = "MtbTk: Mycobacterium tuberculosis Genomics Analysis Toolkit."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -21,6 +21,11 @@ dependencies = [
     "scipy>=1.6.0",
     "statsmodels>=0.12.0",
 ]
+
+[tool.setuptools.package-data]
+"mtbtk" = ["data/*.json"]
+[tool.setuptools]
+include-package-data = true
 
 [project.urls]
 Homepage = "https://github.com/pypa/sampleproject"
