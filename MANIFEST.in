@@ -2,11 +2,9 @@ include LICENSE
 include README.md
 include pyproject.toml
 
-recursive-include data *.json
+include src/mtbtk/data/*.json
 
 recursive-include src *.py
-
-recursive-include tests *.py *.ipynb *.vcf *.fna *.csv
 
 global-exclude *.pyc
 global-exclude __pycache__
