@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MtbTk"
+version = "0.0.1"
+authors = [{ name = "TianyiLu", email = "tianyi9494@gmail.com" }]
+description = "A collection of tools for database manipulation, enrichment analysis, and genome analysis."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "intervaltree>=3.1.0,<4.0.0",
+    "numpy>=2.1.0,<3.0.0",
+    "pandas>=2.2.0,<3.0.0",
+    "scipy>=1.14.0,<2.0.0",
+    "statsmodels>=0.14.0,<0.15.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/pypa/sampleproject"
+Issues = "https://github.com/pypa/sampleproject/issues"
