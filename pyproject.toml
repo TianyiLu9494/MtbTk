@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "MtbTk"
-version = "0.0.3"
+version = "0.0.4"
 authors = [{ name = "TianyiLu", email = "tianyi9494@gmail.com" }]
 description = "MtbTk: Genomics Analysis Toolkit for Mycobacterium Tuberculosis."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
