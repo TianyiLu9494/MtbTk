@@ -1,1 +1,1 @@
-# Genomics Toolkit for Mycobacterium Tuberculosis
+# Genomics Analysis Toolkit for Mycobacterium Tuberculosis
