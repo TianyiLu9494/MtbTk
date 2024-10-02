@@ -28,5 +28,6 @@ dependencies = [
 include-package-data = true
 
 [project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
-Issues = "https://github.com/pypa/sampleproject/issues"
+Homepage = "https://github.com/TianyiLu9494/MtbTk/"
+Issues = "https://github.com/TianyiLu9494/MtbTk/issues"
+License = "https://github.com/TianyiLu9494/MtbTk/blob/main/LICENSE"
