@@ -22,6 +22,15 @@ class VariantAnnotator:
                 gene_intervals[gene_info['start']:gene_info['end']] = gene_name
         return gene_intervals
     
+    def _reverse_complement(self,codon):
+        # 定义碱基互补对
+        complement = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+        
+        # 计算反向互补序列
+        reverse_complement_codon = ''.join(complement[base] for base in reversed(codon))
+        
+        return reverse_complement_codon
+    
     def _is_in_same_codon(self, snp1, snp2):
         overlapping_genes = self.gene_intervals[snp1.POS] & self.gene_intervals[snp2.POS]
         for interval in overlapping_genes:
@@ -31,15 +40,16 @@ class VariantAnnotator:
             strand = gene_info['strand']
             
             if strand == '+':
-                codon1 = (snp1.POS - start) // 3
-                codon2 = (snp2.POS - start) // 3
+                codon1_pos = (snp1.POS - start) // 3
+                codon2_pos = (snp2.POS - start) // 3
+                ref_codon = gene_info['sequence'][codon1_pos*3:codon1_pos*3 + 3]
             else:  # strand == '-'
-                codon1 = (end - snp1.POS) // 3
-                codon2 = (end - snp2.POS) // 3
-            
-            if codon1 == codon2:
-                return True
-        return False
+                codon1_pos = (end - snp1.POS) // 3
+                codon2_pos = (end - snp2.POS) // 3
+                ref_codon = self._reverse_complement(gene_info['sequence'][codon1_pos*3:codon1_pos*3 + 3])
+            if codon1_pos == codon2_pos:
+                return [True, gene_info, ref_codon]
+        return [False, None, None]
     
     def _create_domain_intervals(self):
         domain_intervals = IntervalTree()
@@ -76,21 +86,36 @@ class VariantAnnotator:
 
         while current_snp is not None:
             next_snp = next(rows, None)
-            
-            if next_snp and self._is_in_same_codon(current_snp, next_snp):
-                # 如果在同一个codon，合并SNP
-                pos = current_snp.POS
-                ref = current_snp.REF + next_snp.REF
-                alt = current_snp.ALT + next_snp.ALT
-                
-                # 检查是否还有第三个SNP在同一个codon
-                third_snp = next(rows, None)
-                if third_snp and self._is_in_same_codon(current_snp, third_snp):
-                    ref += third_snp.REF
-                    alt += third_snp.ALT
-                    current_snp = next(rows, None)
+            if next_snp:
+                in_same_codon, gene, ref_codon = self._is_in_same_codon(current_snp, next_snp)
+            else:
+                in_same_codon = False
+            if in_same_codon:
+                # 计算两个 SNP 之间的距离
+                distance = next_snp.POS - current_snp.POS
+                if distance > 1:
+                    # 如果两个 SNP 之间有间隔，说明它们中间还有一个碱基未发生变异
+                    pos = current_snp.POS
+                    ref = ref_codon
+                    alt = current_snp.ALT + ref_codon[1] + next_snp.ALT
+                    current_snp = next_snp
                 else:
-                    current_snp = third_snp
+                    pos = current_snp.POS
+                    ref = current_snp.REF + next_snp.REF
+                    alt = current_snp.ALT + next_snp.ALT
+                    
+                    # 检查是否还有第三个SNP在同一个codon
+                    third_snp = next(rows, None)
+                    if third_snp:
+                        in_same_third, gene_2, ref_codon_third = self._is_in_same_codon(current_snp, third_snp)
+                    else:
+                        in_same_third = False
+                    if in_same_third and (gene_2 == gene):
+                        ref += third_snp.REF
+                        alt += third_snp.ALT
+                        current_snp = next(rows, None)
+                    else:
+                        current_snp = third_snp
             else:
                 pos = current_snp.POS
                 ref = current_snp.REF
@@ -98,7 +123,13 @@ class VariantAnnotator:
                 current_snp = next_snp
 
             # 注释
-            gene_name, variant, annotation, variant_impact = self.annotator.annotate(int(pos), ref, alt)
+            try:
+                gene_name, variant, annotation, variant_impact = self.annotator.annotate(int(pos), ref, alt)
+            except Exception as e:
+                print(f"Error occurred at position: {pos}")
+                print(f"Current SNP: POS={pos}, REF={ref}, ALT={alt}")
+                print(f"Error details: {str(e)}")
+                raise
             
             # 存储注释结果
             AnnotatedSNP.append({
