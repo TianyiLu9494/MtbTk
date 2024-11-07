@@ -128,7 +128,7 @@ class SnpEffectAnnotator:
         ref_codon = gene['sequence'][ref_codon_pos*3:ref_codon_pos*3+3]
         # check if the nucleotide matches the reference
         if gene['sequence'][ref_codon_pos*3+pos_in_codon:ref_codon_pos*3+pos_in_codon+len(ref)] != ref:
-            raise ValueError(f'The reference nucleotide {ref} does not match the genome sequence at{gene["ID"]} {gene["sequence"][ref_codon_pos*3+pos_in_codon:ref_codon_pos*3+pos_in_codon+len(ref)]}')
+            raise ValueError(f'The reference nucleotide {ref}({pos}) does not match the genome sequence at {gene["ID"]} {gene["sequence"][ref_codon_pos*3+pos_in_codon:ref_codon_pos*3+pos_in_codon+len(ref)]}')
         # Change the ref to alt in the codon at pos_in_codon
         alt_codon = self.get_alt_codon(ref_codon, pos_in_codon, alt)
         aa_ref = self.codon_table[ref_codon]
