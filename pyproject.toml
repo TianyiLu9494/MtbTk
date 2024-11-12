@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "MtbTk"
-version = "0.0.1"
+version = "0.0.2"
 authors = [{ name = "TianyiLu", email = "tianyi9494@gmail.com" }]
 description = "MtbTk: Genomics Analysis Toolkit for Mycobacterium Tuberculosis."
 readme = "README.md"
