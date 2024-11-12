@@ -6,6 +6,7 @@ class LineageIdentifier:
         self.lineage_name = lineage_info.get('lineage_name')
 
     def get_match_lineage(self,SNP:pd.DataFrame):
+        SNP['POS']= SNP['POS'].astype(str)
         match_lineage = []
         if "931123" not in SNP['POS'].values:
             match_lineage.append({"allele":"931123_T","lineage":'lineage4','lineage_name':"Euro-American"})
